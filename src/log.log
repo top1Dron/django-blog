@@ -1,0 +1,50 @@
+INFO 2021-05-24 18:03:42,321 views None
+INFO 2021-05-24 18:03:42,323 views admin@dronblog.com - top1Dron
+INFO 2021-05-24 18:06:03,201 views None
+INFO 2021-05-24 18:06:03,209 views admin@dronblog.com - top1Don
+INFO 2021-05-24 18:06:18,628 views None
+INFO 2021-05-24 18:06:18,628 views admin@dronblog.com - top1Dron
+INFO 2021-05-24 18:07:46,451 views None
+INFO 2021-05-24 18:07:46,459 views admin@dronblog.com - top1Dron
+INFO 2021-05-24 18:07:46,477 utils admin
+INFO 2021-05-24 19:03:40,745 views {'paginator': <django.core.paginator.Paginator object at 0x7fd30e9d87c0>, 'page_obj': <Page 1 of 1>, 'is_paginated': False, 'object_list': <QuerySet [<Post: Easy Ways to Sell, Donate, or Recycle Your Stuff - 24.05.2021 09:24:09>]>, 'posts': <QuerySet [<Post: Easy Ways to Sell, Donate, or Recycle Your Stuff - 24.05.2021 09:24:09>]>, 'view': <app.views.PostsByRubricListView object at 0x7fd30e9d85e0>, 'rubrics': <QuerySet [<Rubric: Lorem>, <Rubric: Politics>, <Rubric: Technology>]>, 'login_form': <LoginForm bound=False, valid=Unknown, fields=(username;password)>, 'rubric': <Rubric: Technology>, 'title': <Rubric: Technology>}
+INFO 2021-05-24 19:03:45,308 views {'paginator': <django.core.paginator.Paginator object at 0x7fd30e12ed30>, 'page_obj': <Page 1 of 1>, 'is_paginated': False, 'object_list': <QuerySet [<Post: Easy Ways to Sell, Donate, or Recycle Your Stuff - 24.05.2021 09:24:09>]>, 'posts': <QuerySet [<Post: Easy Ways to Sell, Donate, or Recycle Your Stuff - 24.05.2021 09:24:09>]>, 'view': <app.views.PostsByRubricListView object at 0x7fd30e12e130>, 'rubrics': <QuerySet [<Rubric: Lorem>, <Rubric: Politics>, <Rubric: Technology>]>, 'login_form': <LoginForm bound=False, valid=Unknown, fields=(username;password)>, 'rubric': <Rubric: Technology>, 'title': <Rubric: Technology>}
+INFO 2021-05-24 19:05:54,535 views <QueryDict: {}>
+INFO 2021-05-24 19:05:54,563 views <tr><th><label for="id_username">Login:</label></th><td><input type="text" name="username" class="form-control" maxlength="200" required id="id_username"></td></tr>
+<tr><th><label for="id_password">Password:</label></th><td><input type="password" name="password" class="form-control" maxlength="100" required id="id_password"></td></tr>
+INFO 2021-05-24 19:06:07,066 views <QueryDict: {}>
+INFO 2021-05-24 19:06:07,069 views <tr><th><label for="id_username">Login:</label></th><td><input type="text" name="username" class="form-control" maxlength="200" required id="id_username"></td></tr>
+<tr><th><label for="id_password">Password:</label></th><td><input type="password" name="password" class="form-control" maxlength="100" required id="id_password"></td></tr>
+INFO 2021-05-24 19:07:23,840 views <QueryDict: {}>
+INFO 2021-05-24 19:08:04,252 views GET = <QueryDict: {}>
+INFO 2021-05-24 19:08:09,245 views GET = <QueryDict: {}>
+INFO 2021-05-24 19:08:39,986 views GET = {'rubric_id': 3}
+INFO 2021-05-24 19:08:44,300 views GET = {'rubric_id': 3}
+INFO 2021-05-24 19:09:03,476 views GET = {}
+INFO 2021-05-24 19:09:08,843 views GET = {}
+INFO 2021-05-24 19:53:06,503 views <django.contrib.sessions.backends.db.SessionStore object at 0x7f9508e490d0>
+INFO 2021-05-24 20:53:17,149 views False
+INFO 2021-05-24 21:19:43,062 views {'csrfmiddlewaretoken': 'NqK1bpor7Bsw1rHf8gxhZT32cq4IymyBdvvVxB4W84DPM3jzLGBeLWPEgetvafMS', 'username': 'sadsadas', 'password': 'dasdasdasd'}
+INFO 2021-05-25 00:31:42,909 forms form validation
+INFO 2021-05-25 00:37:55,720 forms form validation
+INFO 2021-05-25 00:38:24,770 forms form validation
+INFO 2021-05-25 00:40:14,209 forms form validation
+INFO 2021-05-25 00:42:47,527 forms form validation
+INFO 2021-05-25 00:44:20,430 forms form validation
+INFO 2021-05-25 01:36:43,897 forms form validation
+INFO 2021-05-25 01:37:59,513 forms form validation
+INFO 2021-05-25 01:38:25,354 forms form validation
+INFO 2021-05-25 01:56:33,910 views <tr><th><label for="id_username">Имя пользователя:</label></th><td><input type="text" name="username" maxlength="150" autocapitalize="none" autocomplete="username" autofocus required id="id_username"><br><span class="helptext">Обязательное поле. Не более 150 символов. Только буквы, цифры и символы @/./+/-/_.</span></td></tr>
+<tr><th><label for="id_password1">Пароль:</label></th><td><input type="password" name="password1" autocomplete="new-password" required id="id_password1"><br><span class="helptext"><ul><li>Пароль не должен быть слишком похож на другую вашу личную информацию.</li><li>Ваш пароль должен содержать как минимум 8 символов.</li><li>Такой пароль часто используется.</li><li>Пароль не может состоять только из цифр.</li></ul></span></td></tr>
+<tr><th><label for="id_password2">Подтверждение пароля:</label></th><td><input type="password" name="password2" autocomplete="new-password" required id="id_password2"><br><span class="helptext">Для подтверждения введите, пожалуйста, пароль ещё раз.</span></td></tr>
+INFO 2021-05-25 02:24:54,271 views 
+INFO 2021-05-25 02:27:01,797 views {}
+INFO 2021-05-25 02:33:07,664 views []
+INFO 2021-05-25 02:36:09,877 views {}
+INFO 2021-05-25 02:36:38,526 views {}
+INFO 2021-05-25 02:38:10,173 views {}
+INFO 2021-05-25 02:38:39,696 views {}
+INFO 2021-05-25 02:42:31,318 views <ul class="errorlist"><li>email<ul class="errorlist"><li>Введите правильный адрес электронной почты.</li></ul></li><li>password2<ul class="errorlist"><li>Введенные пароли не совпадают.</li></ul></li></ul>
+INFO 2021-05-25 02:42:40,727 views <ul class="errorlist"><li>email<ul class="errorlist"><li>Введите правильный адрес электронной почты.</li></ul></li><li>password2<ul class="errorlist"><li>Введенные пароли не совпадают.</li></ul></li><li>username<ul class="errorlist"><li>Пользователь с таким именем уже существует.</li></ul></li></ul>
+INFO 2021-05-25 02:43:11,396 views <ul class="errorlist"><li>email<ul class="errorlist"><li>Введите правильный адрес электронной почты.</li></ul></li><li>password2<ul class="errorlist"><li>Введенные пароли не совпадают.</li></ul></li></ul>
+INFO 2021-05-25 02:45:13,831 views 

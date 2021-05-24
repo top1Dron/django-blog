@@ -154,23 +154,7 @@ LOGGING = {
         },
     },
     'loggers': {
-        'judge':{
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
-            'handlers': ['file',],
-        },
-        'users':{
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
-            'handlers': ['file',],
-        },
-        'competitions':{
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
-            'handlers': ['file',],
-        },
-        'groups':{
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
-            'handlers': ['file',],
-        },
-        'news':{
+        'app':{
             'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
             'handlers': ['file',],
         },

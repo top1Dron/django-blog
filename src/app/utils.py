@@ -1,9 +1,22 @@
+import logging
+import textwrap
+
+from django.contrib.auth.models import User
 from django.db.models import QuerySet
 from app.models import Rubric, Post
 
 
+logger =  logging.getLogger(__name__)
+
+
 def get_all_posts() -> QuerySet[Post]:
-    return Post.objects.all()
+    return Post.objects.all().select_related('rubric')
+
+
+def get_posts_with_shorten_body(posts: QuerySet[Post]) -> QuerySet[Post]:
+    for post in posts:
+        post.body = textwrap.shorten(post.body, 300, placeholder='...')
+    return posts
 
 
 def get_all_rubrics() -> QuerySet[Rubric]:
@@ -16,6 +29,14 @@ def get_posts_by_rubric(rubric_id: int) -> QuerySet[Post]:
 
 def get_rubric_by_id(id):
     return Rubric.objects.get(pk=id)
+
+
+def get_user_by_username(username):
+    try:
+        user = User.objects.get(username=username)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    return user
 
 
 

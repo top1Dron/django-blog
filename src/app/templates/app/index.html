@@ -10,8 +10,9 @@
     {% for post in posts %}
         <article class="blog-post">
             <h2 class="blog-post-title">{{ post.title }}</h2>
-            <p class="blog-post-meta">{{ post.published|date:"M d, Y"}} by <a href="#">{{ post.author.username }}</a></p>
+            <p class="blog-post-meta">{{ post.rubric }}</br>{{ post.published|date:"M d, Y"}} by <a href="#">{{ post.author.username }}</a></p>
             {{ post.body|safe }}
+            {% comment %} <a href="#" class="stretched-link">Continue reading</a> {% endcomment %}
         </article>
     {% empty %}
         <h2 class="blog-post-title">No {{ rubric }} posts yet.</h2>
@@ -19,10 +20,10 @@
     {% if posts %}
         <nav class="blog-pagination" aria-label="Pagination">
             {% if page_obj.has_previous %}
-                <a class="btn btn-outline-primary" href="?page={{ page_obj.previous_page_number }}">Older</a>
+                <a class="btn btn-outline-primary" href="?page={{ page_obj.previous_page_number }}">Newer</a>
             {% endif %}
             {% if page_obj.has_next %}
-                <a class="btn btn-outline-success" href="?page={{ page_obj.next_page_number }}">Newer</a>
+                <a class="btn btn-outline-success" href="?page={{ page_obj.next_page_number }}">Older</a>
             {% endif %}
         </nav>
     {% endif %}
