@@ -1,0 +1,30 @@
+{% extends 'app/base.html' %}
+
+{% load static %}
+
+{% block main_content %}
+    <div class="col-md-8">
+      <h3 class="pb-4 mb-4 fst-italic border-bottom">
+        {{ title|default:"All posts"}}
+      </h3>
+    {% for post in posts %}
+        <article class="blog-post">
+            <h2 class="blog-post-title">{{ post.title }}</h2>
+            <p class="blog-post-meta">{{ post.published|date:"M d, Y"}} by <a href="#">{{ post.author.username }}</a></p>
+            {{ post.body|safe }}
+        </article>
+    {% empty %}
+        <h2 class="blog-post-title">No {{ rubric }} posts yet.</h2>
+    {% endfor %}
+    {% if posts %}
+        <nav class="blog-pagination" aria-label="Pagination">
+            {% if page_obj.has_previous %}
+                <a class="btn btn-outline-primary" href="?page={{ page_obj.previous_page_number }}">Older</a>
+            {% endif %}
+            {% if page_obj.has_next %}
+                <a class="btn btn-outline-success" href="?page={{ page_obj.next_page_number }}">Newer</a>
+            {% endif %}
+        </nav>
+    {% endif %}
+    </div>
+{% endblock main_content %}
