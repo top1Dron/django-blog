@@ -32,7 +32,7 @@ ready(function(){
                 response = JSON.parse(this.response);
                 var errorBlock = document.getElementById('signInErrors');
                 if (Object.keys(response).length == 0){
-                    errorBlock.innerHTML = '';
+                    errorBlock.innerHTML = '<div class="alert alert-success" role="alert">Successfully log in.</div>';
                     location.reload();
                 }
                 
@@ -74,7 +74,7 @@ ready(function(){
                 response = JSON.parse(this.response);
                 var errorBlock = document.getElementById('signUpErrors');
                 if (Object.keys(response).length == 0){
-                    errorBlock.innerHTML = '';
+                    errorBlock.innerHTML = '<div class="alert alert-success" role="alert">Successfully sign up and log in.</div>';
                     location.reload();
                 }
                 

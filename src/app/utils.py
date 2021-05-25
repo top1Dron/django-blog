@@ -1,3 +1,4 @@
+import datetime
 import logging
 import textwrap
 
@@ -17,6 +18,27 @@ def get_posts_with_shorten_body(posts: QuerySet[Post]) -> QuerySet[Post]:
     for post in posts:
         post.body = textwrap.shorten(post.body, 300, placeholder='...')
     return posts
+
+
+def get_filtered_posts_by_date(posts: QuerySet[Post], published_filter=None) -> QuerySet[Post]:
+    if published_filter == 'today':
+        posts = posts.filter(
+            published__day=datetime.date.today().day,
+            published__month=datetime.date.today().month, 
+            published__year=datetime.date.today().year )
+    elif published_filter == 'last_seven_days':
+        posts = posts.filter(
+            published__gte=datetime.datetime.now()-datetime.timedelta(days=7))
+    elif published_filter == 'this_month':
+        posts = posts.filter(
+            published__month=datetime.date.today().month, 
+            published__year=datetime.date.today().year)
+    elif published_filter == 'this_year':
+        posts = posts.filter(published__year=datetime.date.today().year)
+    elif published_filter == 'previous_year':
+        posts = posts.filter(published__year=datetime.date.today().year-1)
+    return get_posts_with_shorten_body(posts)
+
 
 
 def get_all_rubrics() -> QuerySet[Rubric]:

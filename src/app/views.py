@@ -23,7 +23,12 @@ class PostListView(ListView):
     paginate_by = 3
 
     def get_queryset(self):
-        return utils.get_posts_with_shorten_body(posts=utils.get_all_posts())
+        queryset = utils.get_posts_with_shorten_body(posts=utils.get_all_posts())
+        if 'date' in self.request.GET:
+            queryset = utils.get_filtered_posts_by_date(
+                posts=queryset, 
+                published_filter=self.request.GET.get('date'))
+        return queryset
     
 
     def get_context_data(self, **kwargs) -> dict:
@@ -33,6 +38,12 @@ class PostListView(ListView):
             context['login_form'] = forms.LoginForm()
             context['signup_form'] = forms.CustomUserCreationForm()
         return context
+
+
+# class PostFilterListView(PostListView):
+#     def get_queryset(self):
+#         logger.info(self.request.GET)
+#         return super().get_queryset()
 
 
 class PostsByRubricListView(PostListView):

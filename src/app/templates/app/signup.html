@@ -1,0 +1,55 @@
+<!-- Sing up modal -->
+    <div class="modal fade" id="signUpModal" tabindex="-1" aria-labelledby="signUpModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="signUpModalLabel">Sign Up Form</h5>
+                    <button class="btn btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="" signup_url="{% url 'app:signup' %}" method='post' id="signUpModalForm">
+                        {% csrf_token %}
+                        {{ signup_form.non_field_errors }}
+                        {% for hidden_field in signup_form.hidden_fields %}
+                            {{ hidden_field.errors }}
+                            {{ hidden_field }}
+                        {% endfor %}
+                        <div class="row mb-3" id="signUpErrors"></div>
+                        <div class="row mb-3">
+                        {{ signup_form.username.errors }}
+                            <label for="{{signup_form.username.auto_id}}" class="col-sm-2 col-form-label">{{ signup_form.username.label }}</label>
+                            <div class="col sm-10">
+                                {{ signup_form.username }}
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                        {{ signup_form.email.errors }}
+                            <label for="{{signup_form.email.auto_id}}" class="col-sm-2 col-form-label">{{ signup_form.email.label }}</label>
+                            <div class="col sm-10">
+                                {{ signup_form.email }}
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            {{ signup_form.password1.errors }}
+                            <label for="{{signup_form.password1.auto_id}}" class="col-sm-2 col-form-label">{{ signup_form.password1.label }}</label>
+                            <div class="col sm-10">
+                                {{ signup_form.password1 }}
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            {{ signup_form.password2.errors }}
+                            <label for="{{ signup_form.password2.auto_id }}" class="col-sm-2 col-form-label">{{ signup_form.password2.label }}</label>
+                            <div class="col sm-10">
+                                {{ signup_form.password2 }}
+                            </div>
+                        </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button class="btn btn-success" type="submit">Sign Up</button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
