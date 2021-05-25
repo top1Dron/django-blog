@@ -34,6 +34,15 @@ def get_post_by_slug(slug)-> Post:
     return Post.objects.get(slug=slug)
 
 
+def get_posts_by_title_part(search_title:str) -> dict:
+    return get_all_posts().filter(title__icontains=search_title)
+
+
+def get_filtered_posts(search_title:str) -> dict:
+    logger.info({post.slug: post.title for post in get_posts_by_title_part(search_title)})
+    return {post.slug: post.title for post in get_posts_by_title_part(search_title)}
+
+
 def get_post_comments(post: Post) -> QuerySet[Comment]:
     return Comment.objects.filter(post=post)
 

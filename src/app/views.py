@@ -155,3 +155,12 @@ def api_signup_user(request):
             password=form.cleaned_data['password1'])
         login(request, user)
     return JsonResponse(form.errors)
+
+
+def api_search_post(request):
+    search_title = request.GET.get('search_title')
+    posts = {}
+    logger.info(search_title)
+    if search_title:
+        posts = utils.get_filtered_posts(search_title)
+    return JsonResponse(posts)
