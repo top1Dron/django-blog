@@ -1,19 +1,67 @@
 import json
 import logging
 
-from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout, forms as auth_forms
-from django.forms.models import model_to_dict
-from django.http import Http404, HttpResponse, request, JsonResponse
-from django.shortcuts import redirect, reverse, render
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import Http404, JsonResponse
+from django.shortcuts import redirect
+from django.urls import reverse_lazy, reverse
 from django.views.decorators.http import require_http_methods
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView, CreateView
 from app import utils
 from app import forms
 from app.models import Rubric, Post
 
 
 logger = logging.getLogger(__name__)
+
+
+class PostCreateView(LoginRequiredMixin, CreateView):
+    model = Post
+    form_class = forms.PostForm
+    success_url = reverse_lazy('app:index')
+    template_name = 'app/post_create.html'
+
+
+class PostDetailView(DetailView):
+    model = Post
+    context_object_name = 'post'
+    template_name = 'app/post_detail.html'
+
+    def get_object(self) -> Post:
+        try:
+            post = utils.get_post_by_slug(slug=self.kwargs.get('slug'))
+        except Post.DoesNotExist:
+            return Http404('Post not found.')
+        return post
+
+    def get_context_data(self, **kwargs):
+        self.object = self.get_object()
+        context = super().get_context_data(**kwargs)
+        context['rubrics'] = utils.get_all_rubrics()
+        if not self.request.user.is_authenticated:
+            context['login_form'] = forms.LoginForm()
+            context['signup_form'] = forms.CustomUserCreationForm()
+        if 'comment_form' in self.kwargs:
+            context['comment_form'] = self.kwargs.get('comment_form')
+        else:
+            context['comment_form'] = forms.CommentForm()
+        context['comments'] = utils.get_post_comments(self.object)
+        context['comments_count'] = utils.get_comments_count(context['comments'])
+        return context
+
+
+@require_http_methods(['POST'])
+def submit_post_comment(request, slug):
+    post = utils.get_post_by_slug(slug)
+    form = forms.CommentForm(request.POST)
+    if form.is_valid():
+        comment = utils.create_post_comment(
+            comment_body=form.cleaned_data['body'], 
+            post=post, 
+            user=request.user)
+    return redirect(reverse('app:post_detail', kwargs={'slug': slug}))
+
 
 
 class PostListView(ListView):
@@ -40,17 +88,15 @@ class PostListView(ListView):
         return context
 
 
-# class PostFilterListView(PostListView):
-#     def get_queryset(self):
-#         logger.info(self.request.GET)
-#         return super().get_queryset()
-
-
 class PostsByRubricListView(PostListView):
     def get_queryset(self):
         queryset = utils.get_posts_with_shorten_body(
             posts=utils.get_posts_by_rubric(
                 rubric_id=self.kwargs.get('rubric_id')))
+        if 'date' in self.request.GET:
+            queryset = utils.get_filtered_posts_by_date(
+                posts=queryset, 
+                published_filter=self.request.GET.get('date'))
         return queryset
 
     def get_context_data(self, **kwargs) -> dict:

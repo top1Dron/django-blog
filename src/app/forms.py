@@ -1,5 +1,28 @@
+from django.forms import fields
+from app.models import Post
 from django import forms
 from django.contrib.auth import forms as auth_forms, models
+from django_summernote.widgets import SummernoteInplaceWidget
+
+
+class CommentForm(forms.Form):
+    body = forms.CharField(required=True, widget=SummernoteInplaceWidget(attrs={'name': 'editordata'}))
+
+
+class PostForm(forms.ModelForm):
+    body = forms.CharField(required=True, widget=SummernoteInplaceWidget(attrs={'name': 'editordata'}))
+    
+    class Meta:
+        model = Post
+        fields = ('title', 'body', 'rubric')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['title'].widget.attrs['class'] = 'form-control'
+        self.fields['title'].label = 'Title'
+        self.fields['body'].label = 'Body'
+        self.fields['rubric'].widget.attrs['class'] = 'form-select'
+
 
 
 class LoginForm(forms.Form):
@@ -15,7 +38,6 @@ class CustomUserCreationForm(auth_forms.UserCreationForm):
 
     def __init__(self, *args, **kwargs):
         super(CustomUserCreationForm, self).__init__(*args, **kwargs)
-        self.fields['username'].widget.attrs.pop("autofocus", None)
         self.fields['username'].widget.attrs['class'] = 'form-control'
         self.fields['username'].widget.attrs['id'] = 'id_signup_username'
         self.fields['username'].label = 'Login'

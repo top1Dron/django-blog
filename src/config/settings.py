@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'django_summernote',
+
     'app',
 ]
 
@@ -107,7 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'ru-RU'
+LANGUAGE_CODE = 'en-EN'
 
 TIME_ZONE = 'Europe/Kiev'
 
@@ -130,6 +132,27 @@ STATICFILES_DIRS = (
 MEDIA_ROOT = PROJECT_ROOT / 'media'
 
 MEDIA_URL = '/media/'
+
+SUMMERNOTE_THEME = 'lite'
+
+SUMMERNOTE_CONFIG = {
+    'iframe': False,
+    'summernote': {
+        'height': '200',
+        'codemirror': {
+            'mode': 'htmlmixed',
+            'lineNumbers': 'true',
+            'theme': 'monokai',
+        },
+        'toolbar': [
+            ['font', ['bold', 'italic', 'underline', 'clear']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['insert', ['link', 'picture', 'video']],
+            ['view', ['fullscreen', 'codeview', 'help']],
+        ],
+    },
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
