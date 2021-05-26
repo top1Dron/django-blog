@@ -47,3 +47,10 @@ class CustomUserCreationForm(auth_forms.UserCreationForm):
         self.fields['password1'].label = 'Password'
         self.fields['password2'].widget.attrs['class'] = 'form-control'
         self.fields['password2'].label = 'Confirm password'
+
+    def clean(self):
+        super().clean()
+        email = self.cleaned_data.get('email')
+        if models.User.objects.filter(email=email).exists():
+            raise forms.ValidationError("User with this email exists")
+        return self.cleaned_data
