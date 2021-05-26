@@ -39,7 +39,6 @@ def get_posts_by_title_part(search_title:str) -> dict:
 
 
 def get_filtered_posts(search_title:str) -> dict:
-    logger.info({post.slug: post.title for post in get_posts_by_title_part(search_title)})
     return {post.slug: post.title for post in get_posts_by_title_part(search_title)}
 
 

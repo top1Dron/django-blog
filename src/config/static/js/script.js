@@ -14,7 +14,15 @@ function getCookie(name) {
     return matches ? decodeURIComponent(matches[1]) : undefined
 };
 
-function autocomplete(inp, dict) {
+loadPosts = (search_post_url) => {
+    return new Promise(async (resolve, reject) => {
+        let response = await fetch(search_post_url);
+        let json = await response.json();
+        resolve(json);
+    })
+}
+
+async function autocomplete(inp) {
     /*the autocomplete function takes two arguments,
     the text field element and an array of possible autocompleted values:*/
     var currentFocus;
@@ -25,47 +33,66 @@ function autocomplete(inp, dict) {
         closeAllLists();
         if (!val) { return false;}
         currentFocus = -1;
+        var search_post_url = inp.getAttribute('search-posts') + '?search_title=' + inp.value;
+
+        var dict = {};
+        try {
+            loadPosts(search_post_url).then(function(val) {
+                for([key, value] of Object.entries(val)){
+                    dict[key] = value;
+                }
+            });
+        }
+        catch(err) {
+            throw Error(err);
+        }
+
         /*create a DIV element that will contain the items (values):*/
         a = document.createElement("ul");
         a.setAttribute("id", this.id + "autocomplete-list");
-        a.setAttribute("class", "autocomplete-items list-group w-60");
+        a.setAttribute("class", "autocomplete-items list-group");
         /*append the DIV element as a child of the autocomplete container:*/
         this.parentNode.appendChild(a);
         /*for each item in the array...*/
-
-        for ([key, value] of Object.entries(dict)){
-            /*check if the item starts with the same letters as the text field value:*/
-        
-            /*create a DIV element for each matching element:*/
-            b = document.createElement("li");
-            b.setAttribute("class", "list-group-item w-60");
-            /*make the matching letters bold:*/
-            if (dict[key].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-                b.innerHTML = "<strong>" + dict[key].substr(0, val.length) + "</strong>";
-                b.innerHTML += dict[key].substr(val.length);
+        setTimeout(() => {
+            for ([key, value] of Object.entries(dict)){
+                /*check if the item starts with the same letters as the text field value:*/
+            
+                /*create a DIV element for each matching element:*/
+                b = document.createElement("li");
+                b.setAttribute("class", "list-group-item list-group-item-action");
+                /*make the matching letters bold:*/
+                if (dict[key].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                    b.innerHTML = "<strong>" + dict[key].substr(0, val.length) + "</strong>";
+                    b.innerHTML += dict[key].substr(val.length);
+                }
+                else {
+                    b.innerHTML = dict[key].substr(0, val.length) + dict[key].substr(val.length);
+                }
+                /*insert a input field that will hold the current array item's value:*/
+                b.innerHTML += "<input type='hidden' value='" + key + "'>";
+                b.addEventListener("click", function(e) {
+                    /*insert the value for the autocomplete text field:*/
+                    inp.value = this.getElementsByTagName("input")[0].value;
+                    inp.setAttribute('disabled', true);
+                    var post_detail_url = '/blog/' + inp.value;
+                    document.location.href = post_detail_url;
+    
+                    /*close the list of autocompleted values,
+                    (or any other open lists of autocompleted values:*/
+                    closeAllLists();
+                });
+                /*execute a function when someone clicks on the item value (DIV element):*/
+                
+                a.appendChild(b);
             }
-            else {
-                b.innerHTML = dict[key].substr(0, val.length) + dict[key].substr(val.length);
-            }
-            /*insert a input field that will hold the current array item's value:*/
-            b.innerHTML += "<input type='hidden' value='" + dict[key] + "'>";
-            /*execute a function when someone clicks on the item value (DIV element):*/
-            b.addEventListener("click", function(e) {
-            /*insert the value for the autocomplete text field:*/
-                inp.value = this.getElementsByTagName("input")[0].value;
-                document.location.href = '/blog/' + `${key}`;
-
-                /*close the list of autocompleted values,
-                (or any other open lists of autocompleted values:*/
-                closeAllLists();
-            });
-            a.appendChild(b);
-        }
+        }, 100);
     });
     /*execute a function presses a key on the keyboard:*/
     inp.addEventListener("keydown", function(e) {
         var x = document.getElementById(this.id + "autocomplete-list");
-        if (x) x = x.getElementsByTagName("div");
+
+        if (x) x = x.getElementsByTagName("li");
         if (e.keyCode == 40) {
           /*If the arrow DOWN key is pressed,
           increase the currentFocus variable:*/
@@ -95,12 +122,18 @@ function autocomplete(inp, dict) {
       if (currentFocus >= x.length) currentFocus = 0;
       if (currentFocus < 0) currentFocus = (x.length - 1);
       /*add class "autocomplete-active":*/
-      x[currentFocus].classList.add("autocomplete-active");
+
+      console.log(x);
+      console.log(currentFocus);
+      x[currentFocus].classList.add("active");
+      x[currentFocus].setAttribute("aria-current", true);
     }
     function removeActive(x) {
       /*a function to remove the "active" class from all autocomplete items:*/
       for (var i = 0; i < x.length; i++) {
-        x[i].classList.remove("autocomplete-active");
+
+        x[i].classList.remove("active");
+        x[i].setAttribute("aria-current", false);
       }
     }
     function closeAllLists(elmnt) {
@@ -119,17 +152,19 @@ function autocomplete(inp, dict) {
   });
 }
 
-function ajax_json_fill_object(type, url, fillingObject){
+
+function ajaxFillObject(type, url, posts){
     var request = new XMLHttpRequest();
     request.open(type, url, true);
 
 
     request.onload = function() {
         if (this.status >= 200 && this.status < 400) {
-            var resp = JSON.parse(this.response);
-            for ([key, value] of Object.entries(resp)){
-                fillingObject[key] = value;
+            const resp = JSON.parse(this.response);
+            for([key, value] of Object.entries(resp)){
+                posts[`${key}`] = value;
             }
+            console.log(posts);
         }
     };
 
@@ -141,14 +176,9 @@ function ajax_json_fill_object(type, url, fillingObject){
 }
 
 ready(function(){
-
+    
     var search_post_input = document.getElementById('searchPost');
-    search_post_input.addEventListener('input', function(e){
-        var search_problem_url = search_post_input.getAttribute('search-posts') + '?search_title=' + search_post_input.value;
-        var posts = {};
-        ajax_json_fill_object('GET', search_problem_url, posts);
-        autocomplete(search_post_input, posts);
-    });
+    autocomplete(search_post_input);
     
 
     document.getElementById('signinModalForm').addEventListener('submit', function(e){
