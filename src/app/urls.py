@@ -11,6 +11,7 @@ urlpatterns = [
     path('blog/<slug:slug>/', views.PostDetailView.as_view(), name='post_detail'),
     path('blog/<slug:slug>/delete-comment/<int:pk>/', views.delete_post_comment, name='delete_comment'),
     path('blog/<slug:slug>/submit-comment/', views.submit_post_comment, name='submit_comment'),
+    path('blog/<slug:slug>/load-edit-comment-form/<int:pk>/', views.api_load_edit_comment_form, name='api_load_edit_comment_form'),
     path('login/', views.api_login_user, name='login'),
     path('logout/', views.api_logout_user, name='logout'),
     path('signup/', views.api_signup_user, name='signup'),

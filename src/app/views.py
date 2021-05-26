@@ -4,8 +4,9 @@ import logging
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import Http404, JsonResponse
+from django.http import Http404, JsonResponse, response
 from django.shortcuts import redirect
+from django.template.loader import render_to_string
 from django.urls import reverse_lazy, reverse
 from django.views.decorators.http import require_http_methods
 from django.views.generic import ListView, DetailView, CreateView
@@ -177,3 +178,23 @@ def api_search_post(request):
     if search_title:
         posts = utils.get_filtered_posts(search_title)
     return JsonResponse(posts)
+
+
+@login_required
+@require_http_methods(['GET'])
+def api_load_edit_comment_form(request, slug, pk):
+    comment: Comment = None
+    try:
+        comment = utils.get_comment(pk)
+    except Comment.DoesNotExist:
+        raise Http404('Comment not found')
+    comment_form = forms.CommentForm(data={'body': comment.body})
+    logger.info(comment_form)
+    response = {}
+    response['modal-form'] = render_to_string(
+        'app/comment_edit.html',
+        {
+            'comment_form': comment_form,
+        }, 
+        request)
+    return JsonResponse(response)

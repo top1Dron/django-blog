@@ -25,6 +25,7 @@ def get_posts_with_shorten_body(posts: QuerySet[Post]) -> QuerySet[Post]:
         last_chars = body[-4:-13:-1][::-1]
         try:
             post.body = post.body[:post.body.index(last_chars)]
+            post.body = textwrap.shorten(post.body, len(post.body) - 20, placeholder='...')
         except ValueError:
             post.body = textwrap.shorten(post.body, 300, placeholder='...')
     return posts
@@ -63,8 +64,12 @@ def create_post_comment(comment_body:str, post: Post, user: User) -> Comment:
     return comment
 
 
+def get_comment(comment_pk):
+    return Comment.objects.get(pk=comment_pk)
+
+
 def delete_post_comment(comment_pk: int) -> None:
-    comment: Comment = Comment.objects.get(pk=comment_pk)
+    comment: Comment = get_comment(comment_pk)
     comment.delete()
 
 

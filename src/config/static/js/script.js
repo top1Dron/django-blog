@@ -201,7 +201,6 @@ function delete_user_comment(delete_url){
 }
 
 ready(function(){
-    
     var search_post_input = document.getElementById('searchPost');
     autocomplete(search_post_input);
     
@@ -287,6 +286,5 @@ ready(function(){
         data = JSON.stringify(data);
         request.send(data);
     });
-
     
 })
