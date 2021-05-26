@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.shortcuts import reverse
+from django.urls import reverse_lazy
 
 
 class Rubric(models.Model):
@@ -50,3 +50,7 @@ class Comment(models.Model):
 
     class Meta:
         ordering = ['-published']
+
+    @property
+    def get_delete_url(self):
+        return reverse_lazy('app:delete_comment', kwargs={'slug': self.post.slug, 'pk': self.pk})

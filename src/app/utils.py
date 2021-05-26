@@ -63,6 +63,11 @@ def create_post_comment(comment_body:str, post: Post, user: User) -> Comment:
     return comment
 
 
+def delete_post_comment(comment_pk: int) -> None:
+    comment: Comment = Comment.objects.get(pk=comment_pk)
+    comment.delete()
+
+
 def get_filtered_posts_by_date(posts: QuerySet[Post], published_filter) -> QuerySet[Post]:
     if published_filter == 'today':
         posts = posts.filter(

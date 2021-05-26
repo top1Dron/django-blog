@@ -2,6 +2,7 @@ import json
 import logging
 
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404, JsonResponse
 from django.shortcuts import redirect
@@ -10,7 +11,7 @@ from django.views.decorators.http import require_http_methods
 from django.views.generic import ListView, DetailView, CreateView
 from app import utils
 from app import forms
-from app.models import Rubric, Post
+from app.models import Comment, Rubric, Post
 
 
 logger = logging.getLogger(__name__)
@@ -51,6 +52,7 @@ class PostDetailView(DetailView):
         return context
 
 
+@login_required
 @require_http_methods(['POST'])
 def submit_post_comment(request, slug):
     post = utils.get_post_by_slug(slug)
@@ -61,6 +63,16 @@ def submit_post_comment(request, slug):
             post=post, 
             user=request.user)
     return redirect(reverse('app:post_detail', kwargs={'slug': slug}))
+
+
+@login_required
+@require_http_methods(['DELETE'])
+def delete_post_comment(request, slug, pk):
+    try:
+        utils.delete_post_comment(pk)
+    except Comment.DoesNotExist:
+        raise Http404('Comment not found')
+    return JsonResponse({'message': 'Comment deleted'})
 
 
 
@@ -129,6 +141,7 @@ def api_login_user(request):
     return JsonResponse(errors)
 
 
+@login_required
 def api_logout_user(request):
     logout(request)
     return redirect(reverse('app:index'))

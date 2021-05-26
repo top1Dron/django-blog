@@ -175,6 +175,31 @@ function ajaxFillObject(type, url, posts){
     request.send();
 }
 
+function delete_user_comment(delete_url){
+    if(confirm('Are you sure you want to delete comment?')){
+        var request = new XMLHttpRequest();
+        request.open('DELETE', delete_url, true);
+
+        request.onload = function() {
+            if (this.status >= 200 && this.status < 400) {
+                location.reload();
+            }
+        };
+
+        request.onerror = function() {
+            alert('Something went wrong!');
+        };
+        data = {
+            'csrfmiddlewaretoken': getCookie('csrftoken'),
+        };
+        request.setRequestHeader('X-CSRFToken', getCookie('csrftoken'));
+        request.send();
+    }
+    else {
+
+    }
+}
+
 ready(function(){
     
     var search_post_input = document.getElementById('searchPost');
