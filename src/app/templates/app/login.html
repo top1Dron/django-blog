@@ -1,0 +1,41 @@
+<!-- Sing in modal -->
+    <div class="modal fade" id="signinModal" tabindex="-1" aria-labelledby="signinModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="signinModalLabel">Sign in Form</h5>
+                    <button class="btn btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="" login_url="{% url 'app:login' %}" method='post' id="signinModalForm">
+                        {% csrf_token %}
+                        {{ login_form.non_field_errors }}
+                        {% for hidden_field in login_form.hidden_fields %}
+                            {{ hidden_field.errors }}
+                            {{ hidden_field }}
+                        {% endfor %}
+                        <div class="row mb-3" id="signInErrors"></div>
+                        <div class="row mb-3">
+                        {{ login_form.username.errors }}
+                            <label for="{{login_form.username.auto_id}}" class="col-sm-2 col-form-label">{{ login_form.username.label }}</label>
+                            <div class="col sm-10">
+                                {{ login_form.username }}
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            {{ login_form.password.errors }}
+                            <label for="{{login_form.password.auto_id}}" class="col-sm-2 col-form-label">{{ login_form.password.label }}</label>
+                            <div class="col sm-10">
+                                {{ login_form.password }}
+                            </div>
+                        </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button class="btn btn-success" type="submit">Sign in</button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
